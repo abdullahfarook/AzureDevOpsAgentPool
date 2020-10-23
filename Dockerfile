@@ -35,6 +35,10 @@ RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsof
         && add-apt-repository universe \
         && apt-get install -y powershell
 
+RUN add-apt-repository ppa:git-core/ppa -y \
+        && apt-get update \
+        && apt-get install git -y \
+        && git --version
 
 WORKDIR /azp
 COPY ./AzurePowerShell.ps1 .

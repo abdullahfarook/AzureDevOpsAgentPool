@@ -19,4 +19,4 @@ kubectl create secret docker-registry azcr-secret \
  --docker-username=username \
  --docker-password=password
 
-kubectl apply -f AzureDevOpsAgent.yaml
+kubectl apply -f AzureDevOpsAgentPod.yaml

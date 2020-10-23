@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vsts-deployment
+  labels:
+    app: vsts-agent
+spec:
+  replicas: 1 #here is the config for the actual agent allways running
+  selector:
+    matchLabels:
+      app: vsts-agent
+  template:
+    metadata:
+      labels:
+        app: vsts-agent
+    spec:
+      containers:
+        - name: vstsagent
+          image: consultent/azure-pipelines-vsts-agent:latest
+          resources:
+            limits:
+              memory: 3Gi
+            requests:
+              memory: 1Gi
+          env:
+            - name: VSTS_ACCOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: vstsagent
+                  key: VSTS_ACCOUNT
+            - name: VSTS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: vstsagent
+                  key: VSTS_TOKEN
+            - name: VSTS_POOL
+              valueFrom:
+                secretKeyRef:
+                  name: vstsagent
+                  key: VSTS_POOL
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: vstsagent-docker
+      volumes:
+        - name: vstsagent-docker
+          hostPath:
+            path: /var/run/docker.sock

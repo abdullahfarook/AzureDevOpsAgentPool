@@ -1,0 +1,24 @@
+sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode 664 --tls-san <vm ip>" sh -
+
+goto /etc/rancher/k3s/k3s.yaml
+users:
+
+- name: default
+  user:
+  password: <password>
+  username: admin
+
+kubectl config --kubeconfig=config.yaml set-cluster <cluster-name> --server=https://<VmIp>:6443
+kubectl config --kubeconfig=config.yaml set-credentials admin --username=admin --password=<password>
+kubectl config --kubeconfig=config.yaml set-context <context-name> --cluster=<cluster-name> --namespace=default --user=admin
+kubectl config --kubeconfig=config.yaml use-context <context-name>
+
+// For setting Kubernetes on Low Resources Set go to node shell
+
+cd /etc/default
+nano kubelet
+
+KUBELET_EXTRA_ARGS='["--eviction-hard=memory.available<100Mi,nodefs.available<2Gi,nodefs.inodesFree<5%", "--image-gc-high-threshold=100%", "--image-gc-low-threshold=100%"]'
+
+ctrl+o
+ctrl+x

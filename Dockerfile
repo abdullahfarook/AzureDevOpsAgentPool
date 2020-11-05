@@ -39,6 +39,14 @@ RUN add-apt-repository ppa:git-core/ppa -y \
         && apt-get update \
         && apt-get install git -y \
         && git --version
+RUN apt-get -y install gnupg2 \
+        && curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg > /tmp/dkey; apt-key add /tmp/dkey \
+        && add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
+        $(lsb_release -cs) \
+        stable" \
+        && apt-get update \
+        && apt-get -y install docker-ce    
 
 WORKDIR /azp
 COPY ./AzurePowerShell.ps1 .

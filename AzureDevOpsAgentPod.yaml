@@ -27,12 +27,20 @@ spec:
             secretKeyRef:
               name: azdevops
               key: AZP_POOL
+        - name: AZP_WORK
+          value: "/var/agent/az-devops-agent"
       volumeMounts:
         - mountPath: /var/run/docker.sock
           name: azdevopsagent-volume
+        - mountPath: /var/agent
+          name: azdevopsagent-data
   imagePullSecrets:
     - name: azcr-secret
   volumes:
     - name: azdevopsagent-volume
       hostPath:
         path: /var/run/docker.sock
+    - name: azdevopsagent-data
+      hostPath:
+        path: /var/agent
+        type: DirectoryOrCreate

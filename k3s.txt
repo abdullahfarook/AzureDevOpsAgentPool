@@ -1,4 +1,8 @@
-sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode 664 --tls-san <vm ip>" sh -
+allow port 6443 in your vm
+install docker on vm
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+
+sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--write-kubeconfig-mode 664 --tls-san <vm ip>" sh -s - --docker
 
 goto /etc/rancher/k3s/k3s.yaml
 users:

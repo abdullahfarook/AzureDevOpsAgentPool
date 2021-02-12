@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: seq
+  labels:
+    app: seq
+spec:
+  containers:
+    - name: seq
+      image: datalust/seq:latest
+      ports:
+        - containerPort: 80
+        - containerPort: 5341
+      resources:
+        limits:
+          memory: 2Gi
+        requests:
+          memory: 0.5Gi
+      env:
+        - name: ACCEPT_EULA
+          value: "Y"
+      volumeMounts:
+        - mountPath: /data
+          name: seq-volume
+  volumes:
+    - name: seq-volume
+      hostPath:
+        path: /var/seq
+        type: DirectoryOrCreate
